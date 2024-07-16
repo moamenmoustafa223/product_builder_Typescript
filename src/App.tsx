@@ -73,7 +73,7 @@ const App = () => {
 
   const onCancel = () => {
     setProduct(defaultProductObj);
-    closeEditModal();
+    closeModal();
   };
 
   const removeProductHandler = () => {
