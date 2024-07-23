@@ -38,43 +38,34 @@ const App = () => {
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
 
   /* ------- HANDLER -------  */
-  const closeModal = () => setIsOpen(false);
-  const openModal = () => setIsOpen(true);
-  const closeEditModal = useCallback( () => setIsOpenEditModal(false),[])
+  const closeModal = useCallback( () => setIsOpen(false),[])
+  const openModal = useCallback( () => setIsOpen(true),[])
+  const closeEditModal = () => setIsOpenEditModal(false);
   const openEditModal =  useCallback(() => setIsOpenEditModal(true),[])
   const closeConfirmModal = () => setIsOpenConfirmModal(false);
   const openConfirmModal = useCallback(() => setIsOpenConfirmModal(true),[])
 
-  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+
+  const onChangeHandler = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+
+    const { value, name } = event.target;
+    setProduct(prev=>({...prev,  [name]: value,}));
+    setErrors(prev=>({...prev,  [name]: "",}));
+
+  },[]);
+
+  const onChangeEditHandler = useCallback( (event: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
 
-    setProduct({
-      ...product,
-      [name]: value,
-    });
-    setErrors({
-      ...errors,
-      [name]: "",
-    });
-  };
+    setProductToEdit(prev=>({...prev,[name]: value,}));
+    setErrors(prev=>({...prev,  [name]: "",}));
 
-  const onChangeEditHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = event.target;
+  },[])
 
-    setProductToEdit({
-      ...productToEdit,
-      [name]: value,
-    });
-    setErrors({
-      ...errors,
-      [name]: "",
-    });
-  };
-
-  const onCancel = () => {
+  const onCancel = useCallback(() => {
     setProduct(defaultProductObj);
     closeModal();
-  };
+  },[])
 
   const removeProductHandler = () => {
     const filtered = products.filter(product => product.id !== productToEdit.id);
